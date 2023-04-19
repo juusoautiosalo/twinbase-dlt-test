@@ -6,3 +6,5 @@ new_twin_url: https://github.com/juusoautiosalo/twinbase-dlt-test/new/main?filen
 twins:
 - url: https://juusoautiosalo.github.io/twinbase-dlt-test/example-twin-e8fde635-e14a-41d7-85f0-676cd10cae32
   name: Example twin
+- url: https://juusoautiosalo.github.io/twinbase-dlt-test/089b7bbe-7aaa-4f8b-a780-8e8e3b49ac03
+  name: Secret test
