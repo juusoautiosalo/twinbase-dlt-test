@@ -1,4 +1,7 @@
-dt-id: autoassign|https://dtid.org
-hosting-iri: autoassign
+dt-id: https://dtid.org/089b7bbe-7aaa-4f8b-a780-8e8e3b49ac03
+hosting-iri: https://juusoautiosalo.github.io/twinbase-dlt-test/089b7bbe-7aaa-4f8b-a780-8e8e3b49ac03
 name: Secret test
 description: Testing Bitwarden Secrets integration to GitHub Actions with this.
+baseurl: https://juusoautiosalo.github.io/twinbase-dlt-test
+edit: https://github.com/juusoautiosalo/twinbase-dlt-test/edit/main/docs/089b7bbe-7aaa-4f8b-a780-8e8e3b49ac03/index.yaml
+edit-json: https://github.com/juusoautiosalo/twinbase-dlt-test/edit/main/docs/089b7bbe-7aaa-4f8b-a780-8e8e3b49ac03/index.json
