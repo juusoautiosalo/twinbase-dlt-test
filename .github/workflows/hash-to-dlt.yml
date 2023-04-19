@@ -24,6 +24,12 @@ jobs:
       run: |
         python3 -m pip install --upgrade pip
         pip install -r requirements.txt
+    - name: Get Secrets from Bitwarden Secrets Manager
+      uses: bitwarden/sm-action@v1
+      with:
+        access_token: ${{ secrets.BW_ACCESS_TOKEN }}
+        secrets: |
+          ca1ac4f9-4d8e-449f-8ba6-afe900ad5152 > DLT_PRIVATE_KEY
     - name: Submit hash
       env:
           DLT_TYPE: ${{ vars.DLT_TYPE }}
