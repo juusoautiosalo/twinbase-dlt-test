@@ -1,0 +1,7 @@
+{
+    "dlt": "Ethereum Sepolia Testnet",
+    "node": "https://sepolia.infura.io/v3/48b000b110b04b7da85bab51b8c00e98",
+    "twinHashAlgorithm": "Keccak256",
+    "twinHash": "0x1f72a937864a35b3722522309330260b14ad605198e10b3dbaf2440b9373d1d3",
+    "transactionHash": "0x2ac2ebdadfa594b864f03e11142e0245a325c122c6572155c83f7e615bae6478"
+}

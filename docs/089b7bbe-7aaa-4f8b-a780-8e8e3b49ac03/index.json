@@ -5,5 +5,6 @@
     "description": "Testing Bitwarden Secrets integration to GitHub Actions with this.",
     "baseurl": "https://juusoautiosalo.github.io/twinbase-dlt-test",
     "edit": "https://github.com/juusoautiosalo/twinbase-dlt-test/edit/main/docs/089b7bbe-7aaa-4f8b-a780-8e8e3b49ac03/index.yaml",
-    "edit-json": "https://github.com/juusoautiosalo/twinbase-dlt-test/edit/main/docs/089b7bbe-7aaa-4f8b-a780-8e8e3b49ac03/index.json"
+    "edit-json": "https://github.com/juusoautiosalo/twinbase-dlt-test/edit/main/docs/089b7bbe-7aaa-4f8b-a780-8e8e3b49ac03/index.json",
+    "salt": "0xc157b2985535b5b170a6d35c147285b8b7835f8de0f946dac2598ac344e077ad"
 }
