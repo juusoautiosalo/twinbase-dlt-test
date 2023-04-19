@@ -1,0 +1,10 @@
+{
+    "dt-id": "https://dtid.org/example-twin-e8fde635-e14a-41d7-85f0-676cd10cae32",
+    "hosting-iri": "https://twinbase.github.io/twinbase/example-twin-e8fde635-e14a-41d7-85f0-676cd10cae32",
+    "name": "Example twin",
+    "description": "This is an example twin to show what a DT document can look like. You can safely remove the folder that contains this document.",
+    "baseurl": "https://twinbase.github.io/twinbase",
+    "edit": "https://github.com/twinbase/twinbase/edit/main/docs/example-twin-e8fde635-e14a-41d7-85f0-676cd10cae32/index.yaml",
+    "edit-json": "https://github.com/twinbase/twinbase/edit/main/docs/example-twin-e8fde635-e14a-41d7-85f0-676cd10cae32/index.json",
+    "salt": "0xc67ace7d67c6880a5cf22248d64f6f1784b8c1b8c2d63ab13149c37995870224"
+}

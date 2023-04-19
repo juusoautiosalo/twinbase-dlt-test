@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+  <title id="title">Twinbase</title>
+
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="../static/jsonview.bundle.css">
+  <link rel="stylesheet" href="https://cdn.rawgit.com/Chalarangelo/mini.css/v3.0.1/dist/mini-default.min.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    div.max600 {
+      max-width: 600px;
+    }
+  </style>
+
+</head>
+
+<body>
+
+  <header>
+    <a id="twinbase" href="" class="logo">Twinbase</a>
+    <a id="repo" href="" class="button">Repository</a>
+    <a href="http://twinbase.org" class="button">Docs</a>
+  </header>
+
+  <div class="container">
+    <div class="row">
+
+      <div class="col-md-1 col-lg-3"></div>
+      <div class="max600">
+
+        <h1>DT document for <span id="name"></span></h1>
+
+        <p>
+          <span id="dlt-validate">
+            <button id="dlt-validate-button">Validate document</button>
+          </span>
+          <span id="dlt-validating" hidden="">
+            <span class="material-icons">more_horiz</span>
+          </span>
+          <span>
+            <span id="dlt-validate-success" hidden=""><span class="material-icons">check</span></span>
+            <span id="dlt-validate-fail" hidden=""><span class="material-icons">close</span></span>
+            <span id="dlt-validate-reason"></span>
+          </span>
+        </p>
+
+        <p>DT identifier: <a id="dt-id" href=""></a></p>
+
+        <p>You can download the raw <a href="index.json">JSON</a> and <a href="index.yaml">YAML</a> files.</p>
+
+        <p>
+          Edit the document in
+          <a id="edit-json" href="">JSON</a>
+          or in
+          <a id="edit" href="">YAML</a>.
+        </p>
+
+        <p>Twinbase page <a id="baseurl" href="">here</a>.</p>
+
+        <p>Browse the DT document below by clicking the arrows.</p>
+
+        <div class="root"></div>
+
+      </div>
+
+    </div>
+  </div>
+
+
+  <script>
+    fetch('index.json')
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById('title').innerHTML = 'Twinbase - ' + data.name;
+        document.getElementById('name').innerHTML = data.name;
+        document.getElementById('dt-id').href = data['dt-id'];
+        document.getElementById('dt-id').innerHTML = data['dt-id'];
+        document.getElementById('edit').href = data.edit;
+        document.getElementById('edit-json').href = data['edit-json'];
+        document.getElementById('twinbase').href = data.baseurl;
+        document.getElementById('baseurl').href = data.baseurl;
+      })
+  </script>
+
+  <script>
+    fetch("../index.json")
+      .then(response => response.json())
+      .then(basedoc => {
+        document.getElementById('repo').href = basedoc.repo_url;
+      });
+  </script>
+
+  <script type="text/javascript" src="../static/jsonview.bundle.js"></script>
+
+  <script type="text/javascript">
+    fetch('index.json')
+      .then((res) => {
+        return res.text();
+      })
+      .then((data) => {
+        const tree = JsonView.createTree(data);
+        JsonView.render(tree, document.querySelector('.root'));
+        // JsonView.expandChildren(tree);
+        JsonView.showNodeChildren(tree);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+  </script>
+
+  <script type="text/javascript" src="../static/web3/web3.min.js"></script>
+  <script type="text/javascript">
+    // Read transaction hash to variable
+    var hashInfo
+    fetch("./hash-info.json")
+      .then((response) => response.json())
+      .then((json) => {
+        hashInfo = json;
+      });
+
+    // Hash the twin JSON document
+    var twinHash;
+    fetch("./index.json")
+      .then((response) => response.text())
+      .then((twinJSON) => {
+        twinHash = Web3.utils.soliditySha3(twinJSON)
+      });
+
+    function validateTwinHash() {
+      console.log("Validating document...")
+
+      document.getElementById("dlt-validate").hidden = true;
+      document.getElementById("dlt-validating").hidden = false;
+
+      if (!hashInfo || !hashInfo.transactionHash) {
+        console.log("No transaction hash found");
+        document.getElementById("dlt-validating").hidden = true;
+        document.getElementById("dlt-validate-fail").hidden = false;
+        document.getElementById("dlt-validate-reason").innerText = "No transaction hash found";
+        return;
+      };
+
+      if (!hashInfo.node) {
+        console.log("No distributed ledger node found");
+        document.getElementById("dlt-validating").hidden = true;
+        document.getElementById("dlt-validate-fail").hidden = false;
+        document.getElementById("dlt-validate-reason").innerText = "No distributed ledger node found";
+        return;
+      };
+
+      if (!twinHash) {
+        console.log("Twin document could not be hashed");
+        document.getElementById("dlt-validating").hidden = true;
+        document.getElementById("dlt-validate-fail").hidden = false;
+        document.getElementById("dlt-validate-reason").innerText = "Twin document could not be hashed";
+        return;
+      };
+
+      // Connect and create a client to a DLT node
+      let web3 = new Web3(hashInfo.node);
+
+      web3.eth.getTransaction(hashInfo.transactionHash)
+        .then((transaction) => {
+
+          console.log("Twin hash:   " + twinHash);
+          console.log("Ledger hash: " + transaction.input);
+
+          if (transaction.input === twinHash) {
+            console.log("Document is valid");
+
+            document.getElementById("dlt-validating").hidden = true;
+            document.getElementById("dlt-validate-success").hidden = false;
+
+            // Get timestamp for document validation
+            web3.eth.getBlock(transaction.blockHash)
+              .then((block) => {
+                let date = new Date(block.timestamp * 1000).toISOString();
+                document.getElementById("dlt-validate-reason").innerText = "Validated against hash stored to " + hashInfo.dlt + " on " + date;
+              });
+
+          } else {
+            console.log("Unmatching twin document hash");
+            document.getElementById("dlt-validating").hidden = true;
+            document.getElementById("dlt-validate-fail").hidden = false;
+            document.getElementById("dlt-validate-reason").innerText = "Unmatching twin document hash";
+          };
+        })
+    };
+
+    document.getElementById("dlt-validate-button").onclick = validateTwinHash;
+
+  </script>
+
+</body>
+
+</html>
